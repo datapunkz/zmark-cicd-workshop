@@ -58,7 +58,9 @@ jobs:
 workflows:
   test_scan_deploy:
       jobs:
-        - build_and_test
+        - build_and_test:
+            context:
+              - CICD_WORKSHOP_JFROG
         - dependency_vulnerability_scan:
             context:
               - CICD_WORKSHOP_SNYK
