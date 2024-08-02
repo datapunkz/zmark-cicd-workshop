@@ -79,6 +79,6 @@ workflows:
         - dependency_vulnerability_scan:
             context:
               - CICD_WORKSHOP_SNYK
-        - build_docker_image:
+        - jfrog_build_scan_docker_image:
             context:
               - CICD_WORKSHOP_JFROG
