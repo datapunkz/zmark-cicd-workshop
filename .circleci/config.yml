@@ -44,8 +44,13 @@ jobs:
               sudo curl -fL https://install-cli.jfrog.io | sh
               jf config add \
               --user=$ARTIFACTORY_USER \
-              --url=$ARTIFACTORY_URL \
               --access-token=$ARTIFACTORY_API_KEY \
+              --url=$ARTIFACTORY_URL \
+              --artifactory-url=${ARTIFACTORY_URL}/artifactory \
+              --dist-url=${ARTIFACTORY_URL}/distribution \
+              --mission-control-url=${ARTIFACTORY_URL}/ms \
+              --pipelines-url=${ARTIFACTORY_URL}/pipelines \
+              --xray-url=${ARTIFACTORY_URL}/xray \
               --interactive=false
         - run:
             name: Build Docker image
