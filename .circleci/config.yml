@@ -41,6 +41,7 @@ jobs:
         - run:
             name: Install jf cli
             command: |
+              rm ~/.docker
               sudo curl -fL https://install-cli.jfrog.io | sh
               jf config add \
               --user=$ARTIFACTORY_USER \
