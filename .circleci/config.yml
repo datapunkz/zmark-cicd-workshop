@@ -56,12 +56,12 @@ jobs:
         - run:
             name: Build Docker image
             command: |
+              printenv |grep $DOCKER_USER && printenv |grep $DOCKER_PASSWORD
+              docker login --username=$DOCKER_USER --password=$DOCKER_PASSWORD $ARTIFACTORY_URL            
               jf docker buildx build -t punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >> .
         - run:
             name: Push Docker image
             command: |
-              printenv |grep $DOCKER_USER && printenv |grep $DOCKER_PASSWORD
-              docker login --username=$DOCKER_USER --password=$DOCKER_PASSWORD $ARTIFACTORY_URL
               jf docker push punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >>              
         - run:
             name: Push Scan Docker image
