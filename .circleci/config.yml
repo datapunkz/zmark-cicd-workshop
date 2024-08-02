@@ -92,7 +92,7 @@ jobs:
 workflows:
   test_scan_deploy:
       jobs:
-        - build_and_test:
+        - build_test_scan:
             context:
               - CICD_WORKSHOP_JFROG        
         - snyk_vulnerability_scan:
