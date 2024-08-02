@@ -59,6 +59,7 @@ jobs:
         - run:
             name: Push Scan Docker image
             command: |
+              docker images 
               jf docker scan punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >>
         - run:
             name: Push Docker image
