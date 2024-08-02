@@ -28,7 +28,7 @@ jobs:
           path: test-results
       - run:
           command: |
-            sudo curl -fL https://install-cli.jfrog.io | sh \
+            sudo curl -fL https://install-cli.jfrog.io | sh
             jf config add \
             --user=$ARTIFACTORY_USER \
             --url=$ARTIFACTORY_URL \
