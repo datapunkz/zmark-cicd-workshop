@@ -59,7 +59,7 @@ jobs:
         - run:
             name: Push Docker image
             command: |
-              echo $PWD_DOCKER ${URL_DOCKER} |docker login --username=${ARTIFACTORY_USER} --password-stdin
+              echo $PWD_DOCKER |docker login --username=${ARTIFACTORY_USER} --password-stdin ${URL_DOCKER}
               jf docker push ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>              
         - run:
             name: Push Scan Docker image
