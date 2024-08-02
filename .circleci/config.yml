@@ -55,18 +55,17 @@ jobs:
         - run:
             name: Build Docker image
             command: |
-              jf docker buildx build -t $URL_DOCKER/cicd-docker/cicd-workshop:<< pipeline.number >> .
+              jf docker buildx build -t ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >> .
         - run:
             name: Push Docker image
             command: |
               printenv |grep $DOCKER_USER && printenv |grep $DOCKER_PASSWORD
-              docker login --username=$ARTIFACTORY_USER --password=$PWD_DOCKER $URL_DOCKER
-              jf docker push $URL_DOCKER/cicd-docker/cicd-workshop:<< pipeline.number >>              
+              docker login --username=$ARTIFACTORY_USER --password=$PWD_DOCKER ${URL_DOCKER}
+              jf docker push ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>              
         - run:
             name: Push Scan Docker image
             command: |
-              docker images $URL_DOCKER
-              jf docker scan /cicd-docker/cicd-workshop:<< pipeline.number >>
+              jf docker scan ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>
 workflows:
   test_scan_deploy:
       jobs:
