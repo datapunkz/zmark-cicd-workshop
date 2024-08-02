@@ -26,13 +26,14 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
-      - artifactory/install
       - run:
           command: |
+            curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/[RELEASE]/jfrog-cli-linux-amd64/ | sh \
+            chmod a+x jf && sudo mv jf /usr/local/bin
             jf config \
-            --user=${ARTIFACTORY_USER} \
-            --url=${ARTIFACTORY_URL} \
-            --apikey=${ARTIFACTORY_API_KEY} \
+            --user=$ARTIFACTORY_USER \
+            --url=$ARTIFACTORY_URL \
+            --access-token=$ARTIFACTORY_API_KEY \
             --interactive=false
       - artifactory/build-integration
 
