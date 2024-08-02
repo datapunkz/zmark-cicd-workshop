@@ -24,7 +24,7 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
-  dependency_vulnerability_scan:
+  snyk_vulnerability_scan:
       docker:
         - image: cimg/node:16.16.0
       steps:
@@ -57,14 +57,14 @@ jobs:
             command: |
               jf docker buildx build -t ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >> .
         - run:
+            name: X-Ray Scan Docker image
+            command: |
+              jf docker scan ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>
+        - run:
             name: Push Docker image to Artifactory
             command: |
               echo $PWD_DOCKER |docker login --username=${ARTIFACTORY_USER} --password-stdin ${URL_DOCKER}
               jf docker push ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>              
-        - run:
-            name: Push Scan Docker image
-            command: |
-              jf docker scan ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>
         - run:
             name: Push Docker image to Docker Hub
             command: |
