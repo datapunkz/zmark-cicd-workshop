@@ -59,7 +59,7 @@ jobs:
         - run:
             name: Push Docker image
             command: |
-              echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER punkdata.jfrog.io --password-stdin
+              docker login --username=$DOCKER_USER punkdata.jfrog.io --password=$DOCKER_PASSWORD
               jf docker push punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >>              
         - run:
             name: Push Scan Docker image
