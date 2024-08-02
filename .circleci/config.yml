@@ -43,14 +43,14 @@ jobs:
             command: |
               sudo curl -fL https://install-cli.jfrog.io | sh
               jf config add \
-              --user=$ARTIFACTORY_USER \
-              --access-token=$ARTIFACTORY_API_KEY \
-              --url=$ARTIFACTORY_URL \
-              --artifactory-url=$ARTIFACTORY_URL/artifactory \
+              --user=${ARTIFACTORY_USER} \
+              --access-token=${ARTIFACTORY_API_KEY} \
+              --url=${ARTIFACTORY_URL} \
+              --artifactory-url=${ARTIFACTORY_URL}/artifactory \
               --distribution-url=$ARTIFACTORY_URL/distribution \
-              --mission-control-url=$ARTIFACTORY_URL/ms \
-              --pipelines-url=$ARTIFACTORY_URL/pipelines \
-              --xray-url=$ARTIFACTORY_URL/xray \
+              --mission-control-url=${ARTIFACTORY_URL}/ms \
+              --pipelines-url=${ARTIFACTORY_URL}/pipelines \
+              --xray-url=${ARTIFACTORY_URL}/xray \
               --interactive=false
         - run:
             name: Build Docker image
@@ -59,8 +59,7 @@ jobs:
         - run:
             name: Push Docker image
             command: |
-              printenv |grep $DOCKER_USER && printenv |grep $DOCKER_PASSWORD
-              docker login --username=$ARTIFACTORY_USER --password=$PWD_DOCKER ${URL_DOCKER}
+              echo $PWD_DOCKER ${URL_DOCKER} |docker login --username=${ARTIFACTORY_USER} --password-stdin
               jf docker push ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>              
         - run:
             name: Push Scan Docker image
@@ -69,13 +68,10 @@ jobs:
 workflows:
   test_scan_deploy:
       jobs:
-        - build_and_test:
-            context:
-              - CICD_WORKSHOP_JFROG
+        - build_and_test
         - dependency_vulnerability_scan:
             context:
               - CICD_WORKSHOP_SNYK
         - build_docker_image:
             context:
               - CICD_WORKSHOP_JFROG
-              - CICD_WORKSHOP_SNYK
