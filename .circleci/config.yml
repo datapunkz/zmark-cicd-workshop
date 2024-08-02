@@ -33,7 +33,7 @@ jobs:
         - snyk/scan:
             fail-on-issues: false
             monitor-on-build: false
-  build_docker_image:
+  jfrog_build_scan_docker_image:
       machine:
         image: ubuntu-2004:current
       steps:
@@ -57,7 +57,7 @@ jobs:
             command: |
               jf docker buildx build -t ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >> .
         - run:
-            name: Push Docker image
+            name: Push Docker image to Artifactory
             command: |
               echo $PWD_DOCKER |docker login --username=${ARTIFACTORY_USER} --password-stdin ${URL_DOCKER}
               jf docker push ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>              
@@ -65,6 +65,13 @@ jobs:
             name: Push Scan Docker image
             command: |
               jf docker scan ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>
+        - run:
+            name: Push Docker image to Docker Hub
+            command: |
+              echo $HUB_DOCKER_PWD |docker login --username=${HUB_DOCKER_USER} --password-stdin
+              docker tag ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >> \
+                ${HUB_DOCKER_USER}/cicd-workshop:<< pipeline.number >> 
+              docker push ${HUB_DOCKER_USER}/cicd-workshop:<< pipeline.number >>        
 workflows:
   test_scan_deploy:
       jobs:
