@@ -76,7 +76,7 @@ workflows:
   test_scan_deploy:
       jobs:
         - build_and_test
-        - dependency_vulnerability_scan:
+        - snyk_vulnerability_scan:
             context:
               - CICD_WORKSHOP_SNYK
         - jfrog_build_scan_docker_image:
