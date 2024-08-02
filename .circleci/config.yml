@@ -26,10 +26,11 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
+      - artifactory/install
       - run:
+          name: Configure jfrog
           command: |
-            curl -fL https://install-cli.jfrog.io | sudo sh \
-            jf config \
+            jfrog config \
             --user=$ARTIFACTORY_USER \
             --url=$ARTIFACTORY_URL \
             --access-token=$ARTIFACTORY_API_KEY \
