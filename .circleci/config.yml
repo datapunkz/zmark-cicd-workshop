@@ -57,14 +57,14 @@ jobs:
             command: |
               jf docker buildx build -t punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >> .
         - run:
+            name: Push Docker image
+            command: |
+              jf docker push punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >>              
+        - run:
             name: Push Scan Docker image
             command: |
               docker images 
               jf docker scan punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >>
-        - run:
-            name: Push Docker image
-            command: |
-              jf docker push punkdata.jfrog.io/cicd-docker/cicd-workshop:<< pipeline.number >>
 workflows:
   test_scan_deploy:
       jobs:
