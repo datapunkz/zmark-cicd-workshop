@@ -77,5 +77,5 @@ workflows:
               - CICD_WORKSHOP_SNYK
         - build_docker_image:
             context:
-              - CICD_WORKSHOP_DOCKER
+              - CICD_WORKSHOP_JFROG
               - CICD_WORKSHOP_SNYK
