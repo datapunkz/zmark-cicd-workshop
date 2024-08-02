@@ -29,7 +29,7 @@ jobs:
       - run:
           command: |
             sudo curl -fL https://install-cli.jfrog.io | sh \
-            jfrog config \
+            jf config add \
             --user=$ARTIFACTORY_USER \
             --url=$ARTIFACTORY_URL \
             --access-token=$ARTIFACTORY_API_KEY \
