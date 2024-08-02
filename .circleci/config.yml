@@ -5,14 +5,28 @@ orbs:
   snyk: snyk/snyk@1.4.0
   artifactory: jfrog/artifactory-orb@1.0.1
 jobs:
-  build_and_test:
+  build_test_scan:
     machine:
       image: ubuntu-2004:current
     steps:
       - checkout
       - node/install-packages
       - run:
-          name: Run tests
+          name: Install jf cli
+          command: |
+            sudo curl -fL https://install-cli.jfrog.io | sh
+            jf config add \
+            --user=${ARTIFACTORY_USER} \
+            --access-token=${ARTIFACTORY_API_KEY} \
+            --url=${ARTIFACTORY_URL} \
+            --artifactory-url=${ARTIFACTORY_URL}/artifactory \
+            --distribution-url=$ARTIFACTORY_URL/distribution \
+            --mission-control-url=${ARTIFACTORY_URL}/ms \
+            --pipelines-url=${ARTIFACTORY_URL}/pipelines \
+            --xray-url=${ARTIFACTORY_URL}/xray \
+            --interactive=false      
+      - run:
+          name: Run Unit tests
           command: npm run test-ci
       - run:
           name: Copy tests results for storing
@@ -24,6 +38,9 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
+      - run:
+          name: Scan code with X-ray
+          command: jf xr scan *.*
   snyk_vulnerability_scan:
       docker:
         - image: cimg/node:16.16.0
@@ -75,7 +92,9 @@ jobs:
 workflows:
   test_scan_deploy:
       jobs:
-        - build_and_test
+        - build_and_test:
+            context:
+              - CICD_WORKSHOP_JFROG        
         - snyk_vulnerability_scan:
             context:
               - CICD_WORKSHOP_SNYK
