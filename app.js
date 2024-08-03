@@ -3,7 +3,7 @@ var app = express();
 var exports = module.exports = {};
 var versionNumber = "0.0.1"
 var content = ""
-let PORT = process.env.PORT || 3232
+let PORT = process.env.PORT || 5000
 
 function welcomeMessage(){
     var message = "Welcome to the CircleCI Demo!";
