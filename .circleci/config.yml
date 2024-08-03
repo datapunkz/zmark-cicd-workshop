@@ -72,7 +72,11 @@ jobs:
         - run:
             name: Build Docker image
             command: |
-              jf docker buildx build -t ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >> .
+              jf docker buildx build \"
+              -t ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>
+              -t ${URL_DOCKER}/cicd-docker/cicd-workshop:latest
+              -t ${HUB_DOCKER_USER}/cicd-workshop:<< pipeline.number >> \
+              -t ${HUB_DOCKER_USER}/cicd-workshop:latest .
         - run:
             name: X-Ray Scan Docker image
             command: |
@@ -81,14 +85,12 @@ jobs:
             name: Push Docker image to Artifactory
             command: |
               echo $PWD_DOCKER |docker login --username=${ARTIFACTORY_USER} --password-stdin ${URL_DOCKER}
-              jf docker push ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>              
+              jf docker push --all-tags ${URL_DOCKER}/cicd-docker/cicd-workshop              
         - run:
             name: Push Docker image to Docker Hub
             command: |
               echo $HUB_DOCKER_PWD |docker login --username=${HUB_DOCKER_USER} --password-stdin
-              docker tag ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >> \
-                ${HUB_DOCKER_USER}/cicd-workshop:<< pipeline.number >> 
-              docker push ${HUB_DOCKER_USER}/cicd-workshop:<< pipeline.number >>        
+              docker push --all-tags ${HUB_DOCKER_USER}/cicd-workshop       
 workflows:
   test_scan_deploy:
       jobs:
