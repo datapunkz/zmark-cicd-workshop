@@ -72,9 +72,9 @@ jobs:
         - run:
             name: Build Docker image
             command: |
-              jf docker buildx build \"
-              -t ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >>
-              -t ${URL_DOCKER}/cicd-docker/cicd-workshop:latest
+              jf docker buildx build \
+              -t ${URL_DOCKER}/cicd-docker/cicd-workshop:<< pipeline.number >> \
+              -t ${URL_DOCKER}/cicd-docker/cicd-workshop:latest \
               -t ${HUB_DOCKER_USER}/cicd-workshop:<< pipeline.number >> \
               -t ${HUB_DOCKER_USER}/cicd-workshop:latest .
         - run:
