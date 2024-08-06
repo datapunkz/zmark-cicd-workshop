@@ -57,7 +57,7 @@ Execute these commands to pull and run this Docker image locally:
 # Pull the docker image locally
 docker pull ariv3ra/cicd-workshop
 
-# Run the contianer locally 
+# Run the container locally 
 docker run -d --name jfrog-demo -p5000:5000 ariv3ra/cicd-workshop
 ```
 
